@@ -20,3 +20,10 @@
 /dockerfiles/staging/crossbar/*
 !/dockerfiles/staging/crossbar/places_example.yaml
 /.idea
+
+# local crossbar venv
+/leddet-crossbar-venv
+# local debug config
+/.vscode/labgrid.code-workspace
+/.vscode/launch.json
+main.py

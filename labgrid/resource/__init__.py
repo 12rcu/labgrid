@@ -1,3 +1,4 @@
+import imp
 from .base import SerialPort, EthernetInterface, EthernetPort
 from .ethernetport import SNMPEthernetPort
 from .serialport import RawSerialPort, NetworkSerialPort
@@ -18,3 +19,4 @@ from .flashrom import Flashrom, NetworkFlashrom
 from .docker import DockerManager, DockerDaemon, DockerConstants
 from .lxaiobus import LXAIOBusPIO
 from .pyvisa import PyVISADevice
+from .mqtt import LEDDetTopics

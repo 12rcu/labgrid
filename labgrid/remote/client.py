@@ -831,6 +831,61 @@ class ClientSession(ApplicationSession):
             drv.set(True)
         elif action == 'low':
             drv.set(False)
+            
+    async def mqtt(self):
+        place = self.get_acquired_place()
+        target = self._get_target(place)
+        topic = self.args.subscribe
+        time = self.args.time
+        
+        from ..driver.mqtt import MQTTDriver
+        try:
+            drv = target.get_driver(MQTTDriver)
+        except NoDriverFoundError:
+            drv = MQTTDriver(target, name=None)
+        
+        drv.subscribed_topic = topic
+        target.activate(drv)
+    
+        if(time < 0):
+            while True:
+                await asyncio.sleep(1.0)
+        else:
+            from ..util import Timeout
+            timeout = Timeout(time)
+            while True:
+                await asyncio.sleep(1.0)
+                if timeout.expired:
+                    break    
+    
+    async def led(self): 
+        place = self.get_acquired_place()
+        all = self.args.all
+        target = self._get_target(place)
+        time = self.args.time
+        
+        from ..driver.mqtt import LEDBoardTopicDriver
+        try:
+            drv = target.get_driver(LEDBoardTopicDriver)
+        except NoDriverFoundError:
+            drv = LEDBoardTopicDriver(target, name=None)
+        if(all):
+            drv.subscribed_topics.append("")
+        else:
+            print("not impl yet")
+            drv.subscribed_topics.append("")
+        target.activate(drv)
+        
+        if(time < 0):
+            while True:
+                await asyncio.sleep(1.0)
+        else:
+            from ..util import Timeout
+            timeout = Timeout(time)
+            while True:
+                await asyncio.sleep(1.0)
+                if timeout.expired:
+                    break
 
     async def _console(self, place, target):
         name = self.args.name
@@ -1463,6 +1518,24 @@ def main():
     subparser.add_argument('-t', '--delay', type=float, default=None,
                            help='wait time in seconds between off and on during cycle')
     subparser.set_defaults(func=ClientSession.power)
+    
+    subparser = subparsers.add_parser('mqtt',
+                                     aliases=('MQTT'),
+                                     help="get a topic from a mqtt brker")
+    subparser.add_argument('-s', '--subscribe', default="",
+                           help='wait time in seconds for msgs to arrive, -1 for infinit wait')
+    subparser.add_argument('-t', '--time', type=float, default=float(-1),
+                           help='wait time in seconds for msgs to arrive, -1 for infinit wait')
+    subparser.set_defaults(func=ClientSession.mqtt)
+
+    
+    subparser = subparsers.add_parser('led',
+                                     aliases=('leddet'),
+                                     help="get the current LED statues of a place's boards")
+    subparser.add_argument('-a', '--all', action='store_true', help='subscribe to all topics of a place/board')
+    subparser.add_argument('-t', '--time', type=float, default=float(-1),
+                           help='wait time in seconds for msgs to arrive, -1 for infinit wait')
+    subparser.set_defaults(func=ClientSession.led)
 
     subparser = subparsers.add_parser('io',
                                       help="change (or get) a digital IO status")
