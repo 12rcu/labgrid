@@ -65,14 +65,14 @@ class LEDBoardTopicDriver(Driver):
         self._client.loop_start()
         
     def _on_connect(self, client, userdata, flags, rc):
+        print(f"<driver> mqtt client connected")
         for i in self.subscribed_topics:
             if(i != ""):
                 self._client.subscribe(self.board.board_topic + "/" + i)
                 print("subscribe to " + self.board.board_topic + "/" + i)
             else:
                 self._client.subscribe(self.board.board_topic + "/#")
-                print("subscribe to " + self.board.board_topic)
-        print(f"<driver> mqtt client connected")
+                print("subscribe to " + self.board.board_topic + "/#")
 
     def _on_message(self, client, userdata, msg):
         print(f"<driver> topic: {msg.topic} payload: {msg.payload}")

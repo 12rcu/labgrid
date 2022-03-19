@@ -860,7 +860,7 @@ class ClientSession(ApplicationSession):
     
     async def led(self): 
         place = self.get_acquired_place()
-        all = self.args.all
+        topics = self.args.topics
         target = self._get_target(place)
         time = self.args.time
         
@@ -869,14 +869,13 @@ class ClientSession(ApplicationSession):
             drv = target.get_driver(LEDBoardTopicDriver)
         except NoDriverFoundError:
             drv = LEDBoardTopicDriver(target, name=None)
-        if(all):
+        if not topics:
             drv.subscribed_topics.append("")
         else:
-            print("not impl yet")
-            drv.subscribed_topics.append("")
+            drv.subscribed_topics = topics
         target.activate(drv)
         
-        if(time < 0):
+        if time < 0:
             while True:
                 await asyncio.sleep(1.0)
         else:
@@ -1532,9 +1531,9 @@ def main():
     subparser = subparsers.add_parser('led',
                                      aliases=('leddet'),
                                      help="get the current LED statues of a place's boards")
-    subparser.add_argument('-a', '--all', action='store_true', help='subscribe to all topics of a place/board')
     subparser.add_argument('-t', '--time', type=float, default=float(-1),
-                           help='wait time in seconds for msgs to arrive, -1 for infinit wait')
+                          help='wait time in seconds for msgs to arrive, -1 for infinit wait')
+    subparser.add_argument('topics', help="optional topic to subscribe, blank for all", nargs='+')
     subparser.set_defaults(func=ClientSession.led)
 
     subparser = subparsers.add_parser('io',
