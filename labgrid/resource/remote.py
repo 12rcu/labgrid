@@ -306,3 +306,11 @@ class NetworkLXAIOBusNode(ManagedResource):
 class NetworkLXAIOBusPIO(NetworkLXAIOBusNode):
     pin = attr.ib(validator=attr.validators.instance_of(str))
     invert = attr.ib(default=False, validator=attr.validators.instance_of(bool))
+
+
+@attr.s(eq=False)
+class NetworkMQTTResource(ManagedResource):
+    manager_cls = RemotePlaceManager
+
+    host = attr.ib(validator=attr.validators.instance_of(str))
+    avail_topic = attr.ib(validator=attr.validators.instance_of(str))
