@@ -869,13 +869,11 @@ class ClientSession(ApplicationSession):
             drv = target.get_driver(LEDBoardTopicDriver)
         except NoDriverFoundError:
             drv = LEDBoardTopicDriver(target, name=None)
-        if(not topics):
-            drv.subscribed_topics.append("")
-        else:
-            drv.subscribed_topics = topics
+        
+        drv.subscribed_topics = topics
         target.activate(drv)
         
-        if(time < 0):
+        if time < 0:
             while True:
                 await asyncio.sleep(1.0)
         else:
