@@ -20,3 +20,4 @@ from .docker import DockerManager, DockerDaemon, DockerConstants
 from .lxaiobus import LXAIOBusPIO
 from .pyvisa import PyVISADevice
 from .mqtt import LEDBoardTopic
+from .led import LedDetection
