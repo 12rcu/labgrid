@@ -1617,7 +1617,8 @@ def main():
                            help="select a video quality (use 'list' to show options)")
     subparser.set_defaults(func=ClientSession.video)
     
-    subparser = subparser.add_parser('leddet', help="start the led detection software")
+    subparser = subparsers.add_parser('leddet',
+                                     help="start the led detection software")
     subparser.add_argument('-v', '--video', action='store_true',
                            help="add a stream with the current video of the target")
     subparser.set_defaults(func=ClientSession.leddet)
