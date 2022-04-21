@@ -1138,6 +1138,23 @@ class ClientSession(ApplicationSession):
                 print("{} {:<10s} {:s}".format(mark, name, caps))
         else:
             drv.stream(quality)
+    
+    def leddet(self):
+        place = self.get_acquired_place()
+        video = self.args.video
+        target = self._get_target(place)
+        from ..driver.led import LedDetDriver
+        drv = None
+        try:
+            drv = target.get_driver(LedDetDriver)
+        except NoDriverFoundError:
+            drv = LedDetDriver(target, name=None)
+        drv.video = video
+        target.activate(drv)
+        
+        if video:
+            drv.straem
+        
 
     def _get_tmc(self):
         place = self.get_acquired_place()
@@ -1599,6 +1616,11 @@ def main():
     subparser.add_argument('-q', '--quality', type=str,
                            help="select a video quality (use 'list' to show options)")
     subparser.set_defaults(func=ClientSession.video)
+    
+    subparser = subparser.add_parser('leddet', help="start the led detection software")
+    subparser.add_argument('-v', '--video', action='store_true',
+                           help="add a stream with the current video of the target")
+    subparser.set_defaults(func=ClientSession.leddet)
 
     subparser = subparsers.add_parser('tmc', help="control a USB TMC device")
     subparser.set_defaults(func=lambda _: subparser.print_help())
