@@ -319,7 +319,4 @@ class NetworkMQTTResource(ManagedResource):
 @attr.s(eq=False)
 class NetworkLedDetection(ManagedResource):
     manager_cls = RemotePlaceManager
-
     host = attr.ib(validator=attr.validators.instance_of(str))
-    avail_topic = attr.ib(validator=attr.validators.instance_of(str))
-
