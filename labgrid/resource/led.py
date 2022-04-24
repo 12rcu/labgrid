@@ -7,7 +7,7 @@ from ..factory import target_factory
 
 
 @attr.s(eq=False)
-class LedDetection(ResourceManager):
+class LedDetection(ManagedResource):
     host = attr.ib(validator=attr.validators.instance_of(str))
     mqtt_port = attr.ib(validator=attr.validators.instance_of(str))
     reference = attr.ib(validator=attr.validators.instance_of(str))
