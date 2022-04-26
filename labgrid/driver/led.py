@@ -18,7 +18,7 @@ class LedDetDriver(Driver):
         super().__attrs_post_init__()
     
     def on_activate(self):
-        arg = ""
+        arg = "/root/leddet/LED-Detection/src/manin.py "
         if self.led.host is not None:
             arg += "-bh " + self.led.host + " "
         if self.led.mqtt_port is not None: 
