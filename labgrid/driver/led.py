@@ -6,6 +6,7 @@ import attr
 from .common import Driver
 from ..factory import target_factory
 
+
 @target_factory.reg_driver
 @attr.s(eq=False)
 class LedDetDriver(Driver):
@@ -26,7 +27,7 @@ class LedDetDriver(Driver):
         if self.led.reference is not None:
             arg += "-r " + self.led.reference + " "
         if self.led.webcam_id is not None:
-            arg += "-w " +  self.led.webcam_id + " "
+            arg += "-w " + self.led.webcam_id + " "
         if self.video:
             arg += "-v "
 

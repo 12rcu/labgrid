@@ -72,8 +72,8 @@ class LEDBoardTopicDriver(Driver):
                 self._client.subscribe(self.board.board_topic + "/" + i)
                 print("<mqtt-driver> subscribe to " + self.board.board_topic + "/" + i)
             else:
-                self._client.subscribe(self.board.board_topic)
-                print("<mqtt-driver> subscribe to " + self.board.board_topic)
+                self._client.subscribe(self.board.board_topic + "/#")
+                print("<mqtt-driver> subscribe to " + self.board.board_topic + "/#")
 
     def _on_message(self, client, userdata, msg):
         print(f"<mqtt-driver> topic: {msg.topic} payload: {msg.payload}")
