@@ -1,13 +1,12 @@
-import logging
-
 import attr
 
-from .common import ManagedResource, ResourceManager
+from .common import Resource
 from ..factory import target_factory
 
 
+@target_factory.reg_resource
 @attr.s(eq=False)
-class LedDetection(ManagedResource):
+class LedDetection(Resource):
     host = attr.ib(validator=attr.validators.instance_of(str))
     mqtt_port = attr.ib(validator=attr.validators.instance_of(str))
     reference = attr.ib(validator=attr.validators.instance_of(str))
